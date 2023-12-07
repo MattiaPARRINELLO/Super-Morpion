@@ -13,7 +13,7 @@ Description brève du projet.
 
 Il est simple d'installer ce projet, il vous faudra simplement cloner le dépôt et ouvrir index.html dans votre navigateur préféré.
 
-Si vous souhaitez simplement jouer au jeu sans y apporter de modification vous pouvez y acceder en ligne à l'adresse suivante :
+Si vous souhaitez simplement jouer au jeu sans y apporter de modification vous pouvez y acceder en ligne à l'adresse suivante : https://mattiaparrinello.github.io/Super-Morpion/
 _Mais attention, il vous faudra un amis_
 
 ## Utilisation
