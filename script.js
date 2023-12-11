@@ -344,6 +344,20 @@ const checkHalfWin = (bigCase) => {
     ptCase[3].textContent != ""
   ) {
     makeHalfWin(bigCase, 3, 5, 7);
+  } else if (
+    ptCase[1].textContent != "" &&
+    ptCase[2].textContent != "" &&
+    ptCase[3].textContent != "" &&
+    ptCase[4].textContent != "" &&
+    ptCase[5].textContent != "" &&
+    ptCase[6].textContent != "" &&
+    ptCase[7].textContent != "" &&
+    ptCase[8].textContent != "" &&
+    ptCase[9].textContent != ""
+  ) {
+    elements.fullCases.push(parseInt(bigCase));
+    makeAllCasePlayable();
+    checkWin(bigCase);
   }
 };
 const makeHalfWin = (bigCase, pt1, pt2, pt3) => {
@@ -375,7 +389,7 @@ const changeTour = (caseEl) => {
 
 const fadeCases = () => {
   for (let i = 1; i <= 9; i++) {
-    if (i != elements.numLastClicked || i in elements.fullCases) {
+    if (i != elements.numLastClicked || elements.fullCases.includes(i)) {
       elements[`grCase${i}`].el.classList.remove("active");
 
       elements[`grCase${i}`].el.classList.add("fade");
@@ -452,6 +466,73 @@ const checkWin = (bigCase) => {
   ) {
     makeWin(3, 5, 7);
   }
+  // if all the cases are full and no one won
+  if (elements.fullCases.length == 9) {
+    //   make a popup with the winner
+    let popup = document.createElement("div");
+    popup.classList.add("popup");
+    let popupContent = document.createElement("div");
+    popupContent.classList.add("popupContent");
+    let popupText = document.createElement("p");
+    popupText.classList.add("popupText");
+    popupText.textContent = "Match nul !";
+    let popupText2 = document.createElement("p");
+    popupText2.classList.add("popupText");
+    popupText2.textContent =
+      "Les cercles ont : " + elements.points.cercle + " points !";
+    let popupText3 = document.createElement("p");
+    popupText3.classList.add("popupText");
+    popupText3.textContent =
+      "Les croix ont : " + elements.points.croix + " points !";
+    document.body.appendChild(popup);
+    popup.appendChild(popupContent);
+    popupContent.appendChild(popupText);
+    popupContent.appendChild(popupText2);
+    popupContent.appendChild(popupText3);
+    setTimeout(() => {
+      console.log(popup);
+      popup.style.display = "none";
+    }, 3000);
+    elements.numLastClicked = 0;
+    elements.tourActuel = elements.game[pt1 - 1];
+    elements.tourEl.textContent = elements.tourActuel;
+    for (let i = 1; i <= 9; i++) {
+      elements[`grCase${i}`].el.classList.remove("active");
+      elements[`grCase${i}`].el.classList.remove("fade");
+      elements[`grCase${i}`].el.classList.remove("bigText");
+      elements[`grCase${i}`].el.innerHTML = "";
+      //   <div class="grCase" id="gr1">
+      //     <div class="ptCase" id="1pt1"></div>
+      //     <div class="ptCase" id="1pt2"></div>
+      //     <div class="ptCase" id="1pt3"></div>
+      //     <div class="ptCase" id="1pt4"></div>
+      //     <div class="ptCase" id="1pt5"></div>
+      //     <div class="ptCase" id="1pt6"></div>
+      //     <div class="ptCase" id="1pt7"></div>
+      for (let j = 1; j <= 9; j++) {
+        let div = document.createElement("div");
+        div.classList.add("ptCase");
+        div.id = `${i}pt${j}`;
+        elements[`grCase${i}`].el.appendChild(div);
+        elements[`grCase${i}`].ptCase[j] = div;
+      }
+      callAllCases();
+    }
+    elements.fullCases = [];
+    elements.game = [
+      ["x"],
+      ["x"],
+      ["x"],
+      ["x"],
+      ["x"],
+      ["x"],
+      ["x"],
+      ["x"],
+      ["x"],
+    ];
+    elements.numLastClicked = 0;
+    makeAllCasePlayable();
+  }
 };
 
 const makeWin = (pt1, pt2, pt3) => {
@@ -462,55 +543,73 @@ const makeWin = (pt1, pt2, pt3) => {
     elements.game[pt1 - 1] = "❌";
     elements.game[pt2 - 1] = "❌";
     elements.game[pt3 - 1] = "❌";
-    //   make a popup with the winner
     let popup = document.createElement("div");
     popup.classList.add("popup");
+
     let popupContent = document.createElement("div");
     popupContent.classList.add("popupContent");
+
     let popupText = document.createElement("p");
     popupText.classList.add("popupText");
     popupText.textContent = "Les croix ont gagné !";
+
     let popupText2 = document.createElement("p");
     popupText2.classList.add("popupText");
-
     popupText2.textContent =
       "Les croix ont : " + elements.points.croix + " points !";
+
     let popupText3 = document.createElement("p");
     popupText3.classList.add("popupText");
     popupText3.textContent =
       "Les cercles ont : " + elements.points.cercle + " points !";
+
     document.body.appendChild(popup);
     popup.appendChild(popupContent);
     popupContent.appendChild(popupText);
     popupContent.appendChild(popupText2);
     popupContent.appendChild(popupText3);
+
+    setTimeout(() => {
+      console.log(popup);
+      popup.style.display = "none";
+    }, 3000);
   } else {
     elements.points.cercle++;
     elements.points.cercleEl.textContent = elements.points.cercle;
     elements.game[pt1 - 1] = "⭕";
     elements.game[pt2 - 1] = "⭕";
     elements.game[pt3 - 1] = "⭕";
-    //   make a popup with the winner
+
     let popup = document.createElement("div");
     popup.classList.add("popup");
+
     let popupContent = document.createElement("div");
     popupContent.classList.add("popupContent");
+
     let popupText = document.createElement("p");
     popupText.classList.add("popupText");
     popupText.textContent = "Les cercles ont gagné !";
+
     let popupText2 = document.createElement("p");
     popupText2.classList.add("popupText");
     popupText2.textContent =
       "Les cercles ont : " + elements.points.cercle + " points !";
+
     let popupText3 = document.createElement("p");
     popupText3.classList.add("popupText");
     popupText3.textContent =
       "Les croix ont : " + elements.points.croix + " points !";
+
     document.body.appendChild(popup);
     popup.appendChild(popupContent);
     popupContent.appendChild(popupText);
     popupContent.appendChild(popupText2);
     popupContent.appendChild(popupText3);
+
+    setTimeout(() => {
+      console.log(popup);
+      popup.style.display = "none";
+    }, 3000);
   }
   elements.numLastClicked = 0;
   elements.tourActuel = elements.game[pt1 - 1];
@@ -555,8 +654,5 @@ const makeWin = (pt1, pt2, pt3) => {
   }
   makeAllCasePlayable();
   // Close the popup after 3 seconds
-  setTimeout(() => {
-    popup.remove();
-  }, 3000);
 };
 initGame();
