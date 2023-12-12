@@ -1,3 +1,4 @@
+let debug = true;
 /**
  * Represents the game elements and functions.
  * @typedef {Object} GameElements
@@ -104,7 +105,7 @@ const elements = {
     croix: 0,
   },
   game: [["x"], ["x"], ["x"], ["x"], ["x"], ["x"], ["x"], ["x"], ["x"]],
-  joueurs: ["❌", "⭕"],
+  joueurs: ["🍌", "🍒"],
   fullCases: [],
   numLastClicked: 0,
   grCase1: {
@@ -245,9 +246,10 @@ const elements = {
 };
 
 const initGame = () => {
-  console.log("Game initialized");
+  debuging("Game initialized", "success");
   let random = Math.floor(Math.random() * 2);
   elements.tourEl.textContent = elements.joueurs[random];
+  debuging(`${elements.joueurs[random]} starts`, "info");
   elements.points.cercleEl.textContent = "0";
   elements.points.croixEl.textContent = "0";
   elements.tourActuel = elements.joueurs[random];
@@ -267,83 +269,124 @@ const callAllCases = () => {
       addEventListeners(ptCase);
     }
   }
+  debuging(`Added Event Listener in all cases`, "info");
 };
 
 const addEventListeners = (caseEl) => {
   caseEl.addEventListener("click", () => {
-    console.log("Case " + caseEl.id + " clicked");
     caseClicked(caseEl);
   });
 };
 
 const caseClicked = (caseEl) => {
   let ptCase = caseEl.textContent;
+  debuging(`Case ${caseEl.id} clicked`, "info");
   if (ptCase === "") {
+    debuging(`Case ${caseEl.id} is empty`, "success");
     if (elements.numLastClicked != 0) {
       if (caseEl.id[0] == elements.numLastClicked) {
+        debuging(`Case ${caseEl.id} is playable`, "success");
         caseEl.textContent = elements.tourActuel;
+        debuging(
+          `Case ${caseEl.id} marked as ${elements.tourActuel}`,
+          "success"
+        );
         changeTour(caseEl);
         checkHalfWin(caseEl.id[0]);
       }
     } else {
       caseEl.textContent = elements.tourActuel;
+      debuging(`Case ${caseEl.id} marked as ${elements.tourActuel}`, "success");
       changeTour(caseEl);
       checkHalfWin(caseEl.id[0]);
     }
+  } else {
+    debuging(`Case ${caseEl.id} already clicked`, "warning");
   }
 };
 const checkHalfWin = (bigCase) => {
+  debuging(`Checking half-win in case ${bigCase}`, "warning");
   let ptCase = elements[`grCase${bigCase}`].ptCase;
-  let tour = elements.tourActuel;
-  let win = false;
   if (
     ptCase[1].textContent == ptCase[2].textContent &&
     ptCase[2].textContent == ptCase[3].textContent &&
     ptCase[1].textContent != ""
   ) {
-    makeHalfWin(bigCase, 1, 2, 3);
+    debuging(
+      `Half-win happened in case ${bigCase} with the case 1,2 and 3`,
+      "info"
+    );
+    makeHalfWin(bigCase, 1);
   } else if (
     ptCase[4].textContent == ptCase[5].textContent &&
     ptCase[5].textContent == ptCase[6].textContent &&
     ptCase[4].textContent != ""
   ) {
-    makeHalfWin(bigCase, 4, 5, 6);
+    debuging(
+      `Half-winn happened in case ${bigCase} with the case 4,5 and 6`,
+      "info"
+    );
+    makeHalfWin(bigCase, 4);
   } else if (
     ptCase[7].textContent == ptCase[8].textContent &&
     ptCase[8].textContent == ptCase[9].textContent &&
     ptCase[7].textContent != ""
   ) {
-    makeHalfWin(bigCase, 7, 8, 9);
+    debuging(
+      `Half-win happened in case ${bigCase} with the case 7,8 and 9`,
+      "info"
+    );
+    makeHalfWin(bigCase, 7);
   } else if (
     ptCase[1].textContent == ptCase[4].textContent &&
     ptCase[4].textContent == ptCase[7].textContent &&
     ptCase[1].textContent != ""
   ) {
-    makeHalfWin(bigCase, 1, 4, 7);
+    debuging(
+      `Half-win happened in case ${bigCase} with the case 1,4 and 7`,
+      "info"
+    );
+    makeHalfWin(bigCase, 1);
   } else if (
     ptCase[2].textContent == ptCase[5].textContent &&
     ptCase[5].textContent == ptCase[8].textContent &&
     ptCase[2].textContent != ""
   ) {
-    makeHalfWin(bigCase, 2, 5, 8);
+    debuging(
+      `Half-win happened in case ${bigCase} with the case 2,5 and 8`,
+      "info"
+    );
+    makeHalfWin(bigCase, 2);
   } else if (
     ptCase[3].textContent == ptCase[6].textContent &&
     ptCase[6].textContent == ptCase[9].textContent &&
     ptCase[3].textContent != ""
   ) {
-    makeHalfWin(bigCase, 3, 6, 9);
+    debuging(
+      `Half-win happened in case ${bigCase} with the case 3,6 and 9`,
+      "info"
+    );
+    makeHalfWin(bigCase, 3);
   } else if (
     ptCase[1].textContent == ptCase[5].textContent &&
     ptCase[5].textContent == ptCase[9].textContent &&
     ptCase[1].textContent != ""
   ) {
-    makeHalfWin(bigCase, 1, 5, 9);
+    debuging(
+      `Half-win happened in case ${bigCase} with the case 1,5 and 9`,
+      "info"
+    );
+    makeHalfWin(bigCase, 1);
   } else if (
     ptCase[3].textContent == ptCase[5].textContent &&
     ptCase[5].textContent == ptCase[7].textContent &&
     ptCase[3].textContent != ""
   ) {
-    makeHalfWin(bigCase, 3, 5, 7);
+    debuging(
+      `Half-win happened in case ${bigCase} with the case 3,5 and 7`,
+      "info"
+    );
+    makeHalfWin(bigCase, 3);
   } else if (
     ptCase[1].textContent != "" &&
     ptCase[2].textContent != "" &&
@@ -355,31 +398,36 @@ const checkHalfWin = (bigCase) => {
     ptCase[8].textContent != "" &&
     ptCase[9].textContent != ""
   ) {
+    debuging(`case ${bigCase} is full, added it to fullCases`, `success`);
     elements.fullCases.push(parseInt(bigCase));
     makeAllCasePlayable();
-    checkWin(bigCase);
+    checkWin();
+  } else {
+    debuging(`No half-win in case ${bigCase}`, "info");
   }
 };
-const makeHalfWin = (bigCase, pt1, pt2, pt3) => {
+const makeHalfWin = (bigCase, pt1) => {
   elements.game[bigCase - 1] =
     elements[`grCase${bigCase}`].ptCase[pt1].textContent;
   elements[`grCase${bigCase}`].el.innerHTML =
     elements[`grCase${bigCase}`].ptCase[pt1].textContent;
   elements[`grCase${bigCase}`].el.classList.add("bigText");
   elements[`grCase${bigCase}`].el.classList.remove("active");
-  console.log("Big Case id : ", bigCase);
-
   elements.fullCases.push(parseInt(bigCase));
+  debuging(`Half-win marked in case ${bigCase}`, "success");
   makeAllCasePlayable();
-  checkWin(bigCase);
+  checkWin();
 };
 
 const changeTour = (caseEl) => {
   let id = caseEl.id[3];
   elements.numLastClicked = id;
-
-  elements.tourActuel = elements.tourActuel === "❌" ? "⭕" : "❌";
+  elements.tourActuel =
+    elements.tourActuel === elements.joueurs[0]
+      ? elements.joueurs[1]
+      : elements.joueurs[0];
   elements.tourEl.textContent = elements.tourActuel;
+  debuging(`Tour changed to ${elements.tourActuel}`, "success");
   if (elements.fullCases.includes(parseInt(elements.numLastClicked))) {
     makeAllCasePlayable();
   } else {
@@ -391,11 +439,11 @@ const fadeCases = () => {
   for (let i = 1; i <= 9; i++) {
     if (i != elements.numLastClicked || elements.fullCases.includes(i)) {
       elements[`grCase${i}`].el.classList.remove("active");
-
       elements[`grCase${i}`].el.classList.add("fade");
     } else {
       elements[`grCase${i}`].el.classList.remove("fade");
       elements[`grCase${i}`].el.classList.add("active");
+      debuging(`Activated case ${i}`, `success`);
     }
   }
 };
@@ -404,52 +452,59 @@ const makeAllCasePlayable = () => {
   for (let i = 1; i <= 9; i++) {
     elements[`grCase${i}`].el.classList.remove("fade");
     elements[`grCase${i}`].el.classList.remove("active");
+    debuging(`Put ${i} case back to normal`, `success`);
   }
   elements.numLastClicked = 0;
 };
 
-const checkWin = (bigCase) => {
+const checkWin = () => {
   if (
     elements.game[0] == elements.game[1] &&
     elements.game[1] == elements.game[2] &&
     elements.game[0] != ""
   ) {
-    makeWin(1, 2, 3);
+    debuging(`Win happened in cases 1,2 and 3`, "info");
+    makeWin(1, false);
   }
   if (
     elements.game[3] == elements.game[4] &&
     elements.game[4] == elements.game[5] &&
     elements.game[3] != ""
   ) {
-    makeWin(4, 5, 6);
+    debuging(`Win happened in cases 4,5 and 6`, "info");
+    makeWin(4, false);
   }
   if (
     elements.game[6] == elements.game[7] &&
     elements.game[7] == elements.game[8] &&
     elements.game[6] != ""
   ) {
-    makeWin(7, 8, 9);
+    debuging(`Win happened in cases 7,8 and 9`, "info");
+    makeWin(7, false);
   }
   if (
     elements.game[0] == elements.game[3] &&
     elements.game[3] == elements.game[6] &&
     elements.game[0] != ""
   ) {
-    makeWin(1, 4, 7);
+    debuging(`Win happened in cases 1,4 and 7`, "info");
+    makeWin(1, false);
   }
   if (
     elements.game[1] == elements.game[4] &&
     elements.game[4] == elements.game[7] &&
     elements.game[1] != ""
   ) {
-    makeWin(2, 5, 8);
+    debuging(`Win happened in cases 2,5 and 8`, "info");
+    makeWin(2, false);
   }
   if (
     elements.game[2] == elements.game[5] &&
     elements.game[5] == elements.game[8] &&
     elements.game[2] != ""
   ) {
-    makeWin(3, 6, 9);
+    debuging(`Win happened in cases 3,6 and 9`, "info");
+    makeWin(3, false);
   }
 
   if (
@@ -457,159 +512,30 @@ const checkWin = (bigCase) => {
     elements.game[4] == elements.game[8] &&
     elements.game[0] != ""
   ) {
-    makeWin(1, 5, 9);
+    debuging(`Win happened in cases 1,5 and 9`, "info");
+    makeWin(1, false);
   }
   if (
     elements.game[2] == elements.game[4] &&
     elements.game[4] == elements.game[6] &&
     elements.game[2] != ""
   ) {
-    makeWin(3, 5, 7);
+    debuging(`Win happened in cases 3,5 and 7`, "info");
+    makeWin(3, false);
   }
-  // if all the cases are full and no one won
   if (elements.fullCases.length == 9) {
-    //   make a popup with the winner
-    let popup = document.createElement("div");
-    popup.classList.add("popup");
-    let popupContent = document.createElement("div");
-    popupContent.classList.add("popupContent");
-    let popupText = document.createElement("p");
-    popupText.classList.add("popupText");
-    popupText.textContent = "Match nul !";
-    let popupText2 = document.createElement("p");
-    popupText2.classList.add("popupText");
-    popupText2.textContent =
-      "Les cercles ont : " + elements.points.cercle + " points !";
-    let popupText3 = document.createElement("p");
-    popupText3.classList.add("popupText");
-    popupText3.textContent =
-      "Les croix ont : " + elements.points.croix + " points !";
-    document.body.appendChild(popup);
-    popup.appendChild(popupContent);
-    popupContent.appendChild(popupText);
-    popupContent.appendChild(popupText2);
-    popupContent.appendChild(popupText3);
-    setTimeout(() => {
-      console.log(popup);
-      popup.style.display = "none";
-    }, 3000);
-    elements.numLastClicked = 0;
-    elements.tourActuel = elements.game[pt1 - 1];
-    elements.tourEl.textContent = elements.tourActuel;
-    for (let i = 1; i <= 9; i++) {
-      elements[`grCase${i}`].el.classList.remove("active");
-      elements[`grCase${i}`].el.classList.remove("fade");
-      elements[`grCase${i}`].el.classList.remove("bigText");
-      elements[`grCase${i}`].el.innerHTML = "";
-      //   <div class="grCase" id="gr1">
-      //     <div class="ptCase" id="1pt1"></div>
-      //     <div class="ptCase" id="1pt2"></div>
-      //     <div class="ptCase" id="1pt3"></div>
-      //     <div class="ptCase" id="1pt4"></div>
-      //     <div class="ptCase" id="1pt5"></div>
-      //     <div class="ptCase" id="1pt6"></div>
-      //     <div class="ptCase" id="1pt7"></div>
-      for (let j = 1; j <= 9; j++) {
-        let div = document.createElement("div");
-        div.classList.add("ptCase");
-        div.id = `${i}pt${j}`;
-        elements[`grCase${i}`].el.appendChild(div);
-        elements[`grCase${i}`].ptCase[j] = div;
-      }
-      callAllCases();
-    }
-    elements.fullCases = [];
-    elements.game = [
-      ["x"],
-      ["x"],
-      ["x"],
-      ["x"],
-      ["x"],
-      ["x"],
-      ["x"],
-      ["x"],
-      ["x"],
-    ];
-    elements.numLastClicked = 0;
-    makeAllCasePlayable();
+    debuging(`Tie happened`, "info");
+    makeWin(0, true);
   }
 };
 
-const makeWin = (pt1, pt2, pt3) => {
-  let popup;
-  if (elements.game[pt1 - 1] == "❌") {
-    elements.points.croix++;
-    elements.points.croixEl.textContent = elements.points.croix;
-    elements.game[pt1 - 1] = "❌";
-    elements.game[pt2 - 1] = "❌";
-    elements.game[pt3 - 1] = "❌";
-    let popup = document.createElement("div");
-    popup.classList.add("popup");
-
-    let popupContent = document.createElement("div");
-    popupContent.classList.add("popupContent");
-
-    let popupText = document.createElement("p");
-    popupText.classList.add("popupText");
-    popupText.textContent = "Les croix ont gagné !";
-
-    let popupText2 = document.createElement("p");
-    popupText2.classList.add("popupText");
-    popupText2.textContent =
-      "Les croix ont : " + elements.points.croix + " points !";
-
-    let popupText3 = document.createElement("p");
-    popupText3.classList.add("popupText");
-    popupText3.textContent =
-      "Les cercles ont : " + elements.points.cercle + " points !";
-
-    document.body.appendChild(popup);
-    popup.appendChild(popupContent);
-    popupContent.appendChild(popupText);
-    popupContent.appendChild(popupText2);
-    popupContent.appendChild(popupText3);
-
-    setTimeout(() => {
-      console.log(popup);
-      popup.style.display = "none";
-    }, 3000);
-  } else {
-    elements.points.cercle++;
-    elements.points.cercleEl.textContent = elements.points.cercle;
-    elements.game[pt1 - 1] = "⭕";
-    elements.game[pt2 - 1] = "⭕";
-    elements.game[pt3 - 1] = "⭕";
-
-    let popup = document.createElement("div");
-    popup.classList.add("popup");
-
-    let popupContent = document.createElement("div");
-    popupContent.classList.add("popupContent");
-
-    let popupText = document.createElement("p");
-    popupText.classList.add("popupText");
-    popupText.textContent = "Les cercles ont gagné !";
-
-    let popupText2 = document.createElement("p");
-    popupText2.classList.add("popupText");
-    popupText2.textContent =
-      "Les cercles ont : " + elements.points.cercle + " points !";
-
-    let popupText3 = document.createElement("p");
-    popupText3.classList.add("popupText");
-    popupText3.textContent =
-      "Les croix ont : " + elements.points.croix + " points !";
-
-    document.body.appendChild(popup);
-    popup.appendChild(popupContent);
-    popupContent.appendChild(popupText);
-    popupContent.appendChild(popupText2);
-    popupContent.appendChild(popupText3);
-
-    setTimeout(() => {
-      console.log(popup);
-      popup.style.display = "none";
-    }, 3000);
+const makeWin = (pt1, tie) => {
+  if (tie) {
+    openPopup("Égalité !", "tie");
+  } else if (elements.game[pt1 - 1] == elements.joueurs[0]) {
+    openPopup(`Les ${elements.joueurs[0]} ont gagné !`, elements.joueurs[0]);
+  } else if (elements.game[pt1 - 1] == elements.joueurs[1]) {
+    openPopup(`Les ${elements.joueurs[1]} ont gagné !`, elements.joueurs[1]);
   }
   elements.numLastClicked = 0;
   elements.tourActuel = elements.game[pt1 - 1];
@@ -619,17 +545,6 @@ const makeWin = (pt1, pt2, pt3) => {
     elements[`grCase${i}`].el.classList.remove("fade");
     elements[`grCase${i}`].el.classList.remove("bigText");
     elements[`grCase${i}`].el.innerHTML = "";
-    //   <div class="grCase" id="gr1">
-    //     <div class="ptCase" id="1pt1"></div>
-    //     <div class="ptCase" id="1pt2"></div>
-    //     <div class="ptCase" id="1pt3"></div>
-    //     <div class="ptCase" id="1pt4"></div>
-    //     <div class="ptCase" id="1pt5"></div>
-    //     <div class="ptCase" id="1pt6"></div>
-    //     <div class="ptCase" id="1pt7"></div>
-    //     <div class="ptCase" id="1pt8"></div>
-    //     <div class="ptCase" id="1pt9"></div>
-    //   </div>;
     for (let j = 1; j <= 9; j++) {
       let div = document.createElement("div");
       div.classList.add("ptCase");
@@ -651,8 +566,63 @@ const makeWin = (pt1, pt2, pt3) => {
       ["x"],
     ];
     elements.numLastClicked = 0;
+    debuging(`Game reinitialised`, "warining");
   }
   makeAllCasePlayable();
-  // Close the popup after 3 seconds
+  changeTour();
 };
+
+const openPopup = (message, winner) => {
+  if (winner == elements.joueurs[0]) {
+    elements.points.croix++;
+    debuging(`Addded 1 point to ${elements.joueurs[0]}`, "success");
+  } else if (winner == elements.joueurs[1]) {
+    elements.points.cercle++;
+    debuging(`Addded 1 point to ${elements.joueurs[1]}`, "success");
+  } else if (winner == "tie") {
+  } else {
+    return Error;
+  }
+  elements.points.cercleEl.textContent = elements.points.cercle;
+  elements.points.croixEl.textContent = elements.points.croix;
+  let popup = document.createElement("div");
+  popup.classList.add("popup");
+  let popupContent = document.createElement("div");
+  popupContent.classList.add("popupContent");
+  let popupText = document.createElement("p");
+  popupText.classList.add("popupText");
+  popupText.textContent = message;
+  let popupText2 = document.createElement("p");
+  popupText2.classList.add("popupText");
+  popupText2.textContent =
+    "Les cercles ont : " + elements.points.cercle + " points !";
+  let popupText3 = document.createElement("p");
+  popupText3.classList.add("popupText");
+  popupText3.textContent =
+    "Les croix ont : " + elements.points.croix + " points !";
+  document.body.appendChild(popup);
+  popup.appendChild(popupContent);
+  popupContent.appendChild(popupText);
+  popupContent.appendChild(popupText2);
+  popupContent.appendChild(popupText3);
+  debuging(`Popup opened with "${message}" message`, "info");
+  setTimeout(() => {
+    popup.style.display = "none";
+    debuging(`Popup closed`, "info");
+  }, 3000);
+};
+
+const debuging = (message, type) => {
+  const style = `color: ${
+    type === "success"
+      ? "green"
+      : type === "info"
+      ? "lightblue"
+      : type === "warning"
+      ? "orange"
+      : "red"
+  }`;
+  debug ? console.log(`%c[SuperMorpion] - ${message}`, style) : null;
+};
+
 initGame();
