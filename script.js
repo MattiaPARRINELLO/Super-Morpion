@@ -1,100 +1,4 @@
 let debug = true;
-/**
- * Represents the game elements and functions.
- * @typedef {Object} GameElements
- * @property {string} tourActuel - The current player's symbol.
- * @property {HTMLElement} tourEl - The element displaying the current player's symbol.
- * @property {Object} points - The points of each player.
- * @property {HTMLElement} points.cercleEl - The element displaying the points of the circle player.
- * @property {HTMLElement} points.croixEl - The element displaying the points of the cross player.
- * @property {number} points.cercle - The number of points of the circle player.
- * @property {number} points.croix - The number of points of the cross player.
- * @property {Array<Array<string>>} game - The game board.
- * @property {Array<string>} joueurs - The symbols for each player.
- * @property {Array<number>} fullCases - The indices of the fully completed cases.
- * @property {number} numLastClicked - The index of the last clicked case.
- * @property {Object} grCase1 - The first group of cases.
- * @property {HTMLElement} grCase1.el - The element representing the first group of cases.
- * @property {string} grCase1.id - The ID of the first group of cases.
- * @property {Object} grCase1.ptCase - The individual cases within the first group.
- * @property {HTMLElement} grCase1.ptCase.1 - The first case within the first group.
- * @property {HTMLElement} grCase1.ptCase.2 - The second case within the first group.
- * ...
- * @property {Object} grCase9 - The ninth group of cases.
- * @property {HTMLElement} grCase9.el - The element representing the ninth group of cases.
- * @property {string} grCase9.id - The ID of the ninth group of cases.
- * @property {Object} grCase9.ptCase - The individual cases within the ninth group.
- * @property {HTMLElement} grCase9.ptCase.1 - The first case within the ninth group.
- * @property {HTMLElement} grCase9.ptCase.2 - The second case within the ninth group.
- * ...
- */
-
-/**
- * Initializes the game.
- * @function initGame
- */
-
-/**
- * Adds event listeners to all cases.
- * @function callAllCases
- */
-
-/**
- * Adds an event listener to a case.
- * @function addEventListeners
- * @param {HTMLElement} caseEl - The case element.
- */
-
-/**
- * Handles the click event on a case.
- * @function caseClicked
- * @param {HTMLElement} caseEl - The clicked case element.
- */
-
-/**
- * Checks if a half-win condition is met in a big case.
- * @function checkHalfWin
- * @param {string} bigCase - The ID of the big case.
- */
-
-/**
- * Marks a half-win in a big case.
- * @function makeHalfWin
- * @param {string} bigCase - The ID of the big case.
- * @param {number} pt1 - The first point of the half-win.
- * @param {number} pt2 - The second point of the half-win.
- * @param {number} pt3 - The third point of the half-win.
- */
-
-/**
- * Changes the current player's turn.
- * @function changeTour
- * @param {HTMLElement} caseEl - The clicked case element.
- */
-
-/**
- * Fades the inactive cases.
- * @function fadeCases
- */
-
-/**
- * Makes all cases playable.
- * @function makeAllCasePlayable
- */
-
-/**
- * Checks if a win condition is met in a big case.
- * @function checkWin
- * @param {string} bigCase - The ID of the big case.
- */
-
-/**
- * Marks a win in a big case.
- * @function makeWin
- * @param {number} pt1 - The first point of the win.
- * @param {number} pt2 - The second point of the win.
- * @param {number} pt3 - The third point of the win.
- */
 const elements = {
   tourActuel: "rond",
   tourEl: document.getElementById("tour"),
@@ -105,7 +9,7 @@ const elements = {
     croix: 0,
   },
   game: [["x"], ["x"], ["x"], ["x"], ["x"], ["x"], ["x"], ["x"], ["x"]],
-  joueurs: ["🍌", "🍒"],
+  joueurs: ["❌", "⭕"],
   fullCases: [],
   numLastClicked: 0,
   grCase1: {
